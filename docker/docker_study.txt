@@ -1,0 +1,99 @@
+docker run ubuntu:15.10 /bin/echo "Hello world"  启动一个容器
+docker run -p 80:80 --name mynginx -v $PWD/www:/www -v $PWD/conf/nginx.conf:/etc/nginx/nginx.conf -v $PWD/logs:/wwwlogs  -d nginx  
+
+```
+ps:允许将多个容器连接在一起,其中父容器可以看到子容器的信息。
+docker: Docker 的二进制执行文件。
+run:与前面的 docker 组合来运行一个容器。
+ubuntu:15.10指定要运行的镜像，Docker首先从本地主机上查找镜像是否存在，如果不存在，Docker 就会从镜像仓库 Docker Hub 下载公共镜像。
+/bin/echo "Hello world": 在启动的容器里执行的命令
+```
+run
+-t:在新容器内指定一个伪终端或终端。
+-i:允许你对容器内的标准输入 (STDIN) 进行交互
+-d:启动容器（后台模式）
+-P:将容器内部使用的网络端口映射到我们使用的主机上。
+-p :是容器内部端口绑定到指定的主机端口。 
+--name runoob training/webapp  命名容器
+```
+-p 127.0.0.1:5001:5000 这样我们就可以通过访问127.0.0.1:5001来访问容器的5000端口。
+默认都是绑定 tcp 端口，如果要绑定 UDP 端口，可以在端口后面加上 /udp。
+-p 127.0.0.1:5001:5000/udp
+```
+-v $PWD/www:/www：将主机中当前目录下的www挂载到容器的/www
+-v $PWD/conf/nginx.conf:/etc/nginx/nginx.conf：将主机中当前目录下的nginx.conf挂载到容器的/etc/nginx/nginx.conf
+-v $PWD/logs:/wwwlogs：将主机中当前目录下的logs挂载到容器的/wwwlogs
+
+
+
+docker ps 正在运行的容器
+docker logs 2b1b7a428627 容器日志
+docker stop 2b1b7a428627 停止容器
+docker port 2b1b7a428627 查看端口情况
+docker rm 2b1b7a428627 停止了才能删除容器
+docker rmi 2b1b7a428627 停止了才能删除镜像
+docker images 来列出本地主机上的镜像
+```
+REPOSITORY：表示镜像的仓库源
+TAG：镜像的标签
+IMAGE ID：镜像ID
+CREATED：镜像创建时间
+SIZE：镜像大小
+```
+docker pull ubuntu:13.10 预先下载镜像
+docker search httpd 搜索httpd镜像  https://hub.docker.com/
+```
+NAME:镜像仓库源的名称
+DESCRIPTION:镜像的描述
+OFFICIAL:是否docker官方发布
+```
+docker run httpd 使用镜像
+docker exec -it 2b1b7a428627 进入容器
+
+docker run -t -i ubuntu:15.10 /bin/bash  
+	容器内使用 apt-get update 命令进行		更新镜像
+	exit退出容器
+
+docker commit -m="has update" -a="runoob" e218edb10161 runoob/ubuntu:v2 提交镜像
+```
+-m:提交的描述信息
+-a:指定镜像作者
+e218edb10161：容器ID
+runoob/ubuntu:v2:指定要创建的目标镜像名
+```
+
+
+从零构建镜像
+
+Dockerfile
+
+每一个指令都会在镜像上创建一个新的层，每一个指令的前缀都必须是大写的。
+第一条FROM，指定使用哪个镜像源
+RUN 指令告诉docker 在镜像内执行命令，安装
+```
+FROM    centos:6.7
+MAINTAINER      Fisher "fisher@sudops.com"
+
+RUN     /bin/echo 'root:123456' |chpasswd
+RUN     useradd runoob
+RUN     /bin/echo 'runoob:123456' |chpasswd
+RUN     /bin/echo -e "LANG=\"en_US.UTF-8\"" >/etc/default/local
+EXPOSE  22
+EXPOSE  80
+CMD     /usr/sbin/sshd -D
+```
+
+通过 docker build 命令来构建一个镜像。
+docker build  -t runoob/centos:6.7 .
+```
+-t ：指定要创建的目标镜像名
+. ：Dockerfile 文件所在目录，可以指定Dockerfile 的绝对路径
+```
+
+docker images 查看构建的镜像
+
+上传镜像
+登陆dockerhub创建仓库
+docker tag images 仓库名
+docker login
+docker push 仓库名
