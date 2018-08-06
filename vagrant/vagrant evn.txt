@@ -17,7 +17,7 @@ xshell5
 4.打开xshell5 输入指令
 1.添加指令
 vagrant box add ubuntu1404 ubuntu1404.box
-vagrant box list
+
 2.切换到一个新的文件夹输入初始化指令
 vagrant init ubuntu1404
 3.连接到box内部（默认用户名:vagrant 密码:vagrant
@@ -105,7 +105,6 @@ config.vm.synced_folder "/Users/vincent/code/", "/home/www"
 
 vagrant init        初始化vagrantfile
 vagrant add box     添加box，自动帮你生成vagrantfile
-vagrant box list    查看box
 vagrant halt        关闭虚拟机
 vagrant destroy     销毁虚拟机
 vagrant ssh         连接虚拟机
@@ -131,4 +130,15 @@ vagrant reload --provision
 
 GUI调试
 vagrantfile  vagrant line 52
+
+
+
+备份还原步骤
+vagrant halt
+vagrant package --output mybak.box
+备份完成后 添加
+vagrant box add mybak.box
+新建文件夹并切换位置到该目录下
+vagrant box list
+vagrant init ubuntu14040626
 

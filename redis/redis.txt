@@ -1,0 +1,59 @@
+keys *
+type key
+PERSIST key 移除过期时间
+CONFIG GET *
+config set notify-keyspace-events Ex 过期通知事件
+psubscribe  __keyevent@0__:expired 这个格式是固定的，0代表的是数据库的编号
+expire mykey 5
+psubscribe __keyevent@0__:expired
+
+字符串 string 存储数值 字符串 自增或自减
+redis-cli
+set hello world
+get hello
+del hello
+get hello
+
+列表 list 一个列表结构可以有序地存储多个字符串(可重复) 		有序 值可重复
+rpush list-key item 左添加
+lpush list-key itm2  右添加
+lindex list-key 0  查看第0个值
+lrange list-key 0 -1 查看所有
+lpop list-key 左弹出 
+rpop list-key 右弹出
+
+集合 set  无序存储多个字符串 集合存储值各不相同  			无序 值不可重复
+sadd set-key item 添加一个集合元素
+srem set-key item 删除一个集合元素
+smembers set-key 查看所有键
+sismember set-key item4 检查一个元素是否存在于集合
+scard 获取集合里的元素数量
+SRANDMEMBER key [count] 从集合里面随机获取一个元素
+SINTER key [key ...] 获得两个集合的交集
+SDIFF key [key ...] 获得两个集合的差集
+SUNION key [key ...] 添加多个set元素
+
+
+
+散列 hash 存储多个键值对之间的映射 各不相同的键无序排列	无序排列
+hset hash-key sub-key1 value1 添加一个键值
+hgetall hash-key 获取所有键值
+hkeys hash-key 获取所有键
+hget hash-key sub-key1 获取单个键值
+hdel hash-key sub-key1 删除一个键值
+hlen hash-key 获取长度
+hexists hash-key sub-key1 判断是否存在
+
+有序集合 zset 存储键值对 键被称成员 成员各不相同  值被称分值必须为浮点数 可根据成员或分值、分值排序来访问元素的结构 根据相关的分值排序
+zadd zset-key 828 member0 添加元素
+zrange zset-key 0 -1 withscores 获取有序集合所有集合元素 分值大小排序
+zrangebyscore zset-key 0 800 withscores 根据分值来获取有序集合的部分元素
+zrem zset-key member1 移除有序集合元素
+zscore zset-key member0 获取成员分数值
+
+文章评分公式:发布时间+票数*432
+article:92617:hash 文章信息
+time:zset 发布时时间
+score:zset 分值
+voted:100408:set 投票数
+

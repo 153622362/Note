@@ -1,0 +1,283 @@
+<meta charset="UTF-8">
+<script type="text/javascript">
+{
+	var z,x,c,d
+	let a = 10;
+	var b = 1;
+}
+var tmp = 123;
+
+if (true) {
+  tmp = 'abc'; // ReferenceError
+  console.log(tmp)
+	// let tmp;
+}
+function f1() {
+  let n = 5;
+  if (true) {
+    let n = 10;
+  }
+  console.log(n); // 5
+}
+
+var message = "Hello!";
+let age = 25;
+
+// 以下两行都会报错
+// const message = "Goodbye!";
+// const age = 30;
+
+const a = [];
+a.push('Hello'); // 可执行
+a.length = 0;    // 可执行
+// a = ['Dave'];    // 报错
+
+//2.变量的解构赋值
+let [q, w, e] = [1, 2, 3];
+
+let [head, ...tail] = [1, 2, 3, 4];
+// head // 1
+// tail // [2, 3, 4]
+let [r, [t], y] = [1, [2, 3], 4];
+// r // 1
+// t // 2
+// y // 4
+let [u, i, o] = new Set(['a', 'b', 'c']);
+// x // "a"
+//默认值
+let [p, l = 'b'] = ['a']; // p='a', l='b'
+
+function f() {
+  console.log('aaa');
+}
+
+let [j = f()] = [1]; //j取到值 f函数不会执行
+console.log(j);
+
+//对象赋值 变量必须与属性同名
+let { foo, bar } = { foo: "aaa", bar: "bbb" };
+// foo // "aaa"
+// bar // "bbb"
+
+//变量名不同的写法
+let obj = { first: 'hello', last: 'world' };
+let { first: v, last: m } = obj;
+// v // 'hello'
+// m // 'world'
+
+let obj2 = {
+  p1: [
+    'Hello',
+    { y1: 'World' }
+  ]
+};
+
+let { p1, p1: [x1, { y1 }] } = obj2;
+// x1 // "Hello"
+// y1 // "World"
+// p1 // ["Hello", {y: "World"}]
+
+function add([x, y]){
+  return x + y;
+}
+
+add([1, 2]); // 3
+
+//javascript 模板语法
+// 字符串中嵌入变量
+let name = "Bob", time = "today";
+`Hello ${name}, how are you ${time}?`
+
+//正则
+// 字符串中嵌入变量
+var regex = new RegExp(/xyz/i);
+// 等价于
+var regex = /xyz/i;
+//字符串正则函数 
+// String.prototype.match() match()、replace()、search()和split()。
+//u y 属性source flags sticky 
+
+// ES5 的 source 属性
+// 返回正则表达式的正文
+// /abc/ig.source
+// "abc"
+
+// ES6 的 flags 属性
+// 返回正则表达式的修饰符
+// /abc/ig.flags
+// 'gi'
+
+//数值扩展
+// Math.trunc()方法用于去除一个数的小数部分，返回整数部分。
+// Math.sign() 判断一个数是正数、负数、还是零。对于非数值，会先将其转换为数值
+//Math.cbrt(2) 2的立方根
+//Math.imul(2,4) 两个数以 32 位带符号整数形式相乘的结果
+// Math.fround方法的主要作用，是将64位双精度浮点数转为32位单精度浮点数。
+// 未丢失有效精度
+// Math.fround(1.125) // 1.125
+// Math.fround(7.25)  // 7.25
+
+// // 丢失精度
+// Math.fround(0.3)   // 0.30000001192092896
+// Math.fround(0.7)   // 0.699999988079071
+// Math.fround(1.0000000123) // 1
+
+//函数扩展
+var sum = (num1, num2) => num1 + num2;
+// 等同于
+var sum = function(num1, num2) {
+  return num1 + num2;
+};
+
+// 正常函数写法
+// [1,2,3].map(function (x) {
+//   return x * x;
+// });
+
+// 箭头函数写法
+// [1,2,3].map(x => x * x); [1,4,9]
+
+
+// 函数绑定 双冒号左边是一个对象，右边是一个函数。该运算符会自动将左边的对象，作为上下文环境（即this对象），绑定到右边的函数上面。
+// foo::bar;
+// // 等同于
+// bar.bind(foo);
+
+// Set它类似于数组，但是成员的值都是唯一的
+const s = new Set();
+[2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+for (let i of s) {
+  console.log(i);
+}
+// 2 3 5 4
+
+// 例二
+const items = new Set([1, 2, 3, 4, 5, 5, 5, 5]);
+items.size // 5
+
+// Set实例的属性
+// Set.prototype.constructor
+// Set.prototype.size
+// 操作方法.add(value) delete(value) has(value) clear()
+
+// Array.from方法可以将 Set 结构转为数组。
+const items1 = new Set([1, 2, 3, 4, 5]);
+const array = Array.from(items);
+// 遍历方法 keys()
+			// values()
+			// entries()：返回键值对的遍历器
+			// forEach()：使用回调函数遍历每个成员
+
+// 这就提供了去除数组重复成员的另一种方法。
+function dedupe(array) {
+  return Array.from(new Set(array));
+}
+
+dedupe([1, 1, 2, 3]) // [1, 2, 3]
+
+//MAP Object 结构提供了“字符串—值”的对应，Map 结构提供了“值—值”的对应，
+const data = {};
+const element = document.getElementById('myDiv');
+
+data[element] = 'metadata';
+data['[object HTMLDivElement]'] // "metadata"
+
+const m1 = new Map();
+const o1 = {p: 'Hello World'};
+
+m1.set(o1, 'content')
+m1.get(o1) // "content"
+
+m1.has(o1) // true
+m1.delete(o1) // true
+m1.has(o1) // false
+const map = new Map([
+  ['name', '张三'],
+  ['title', 'Author']
+]);
+
+
+map.size // 2
+map.has('name') // true
+map.get('name') // "张三"
+map.has('title') // true
+map.get('title') // "Author"
+
+
+// Promise 
+
+
+// Module语法
+// profile.js
+var firstName = 'Michael';
+var lastName = 'Jackson';
+var year = 1958;
+
+export {firstName, lastName, year};
+
+// main.js
+import {firstName, lastName, year} from './profile.js';
+//别名
+function v1() { ... }
+function v2() { ... }
+
+export {
+  v1 as streamV1,
+  v2 as streamV2,
+  v2 as streamLatestVersion
+};
+
+// 写法一
+export var m = 1;
+
+// 写法二
+var m = 1;
+export {m};
+
+// 写法三
+var n = 1;
+export {n as m};
+
+// 正确
+export function f() {};
+
+// 正确
+function f() {}
+export {f};
+
+//匿名export default 
+// 第一组
+export default function crc32() { // 输出
+  // ...
+}
+
+import crc32 from 'crc32'; // 输入
+
+// 第二组
+export function crc32() { // 输出
+  // ...
+};
+
+import {crc32} from 'crc32'; // 输入
+
+// 正确
+export var a = 1;
+
+// 正确
+var a = 1;
+export default a;
+
+// 错误
+export default var a = 1;
+
+//输出类
+// MyClass.js
+export default class { ... }
+
+// main.js
+import MyClass from 'MyClass';
+let o = new MyClass();
+
+</script>
+
+
