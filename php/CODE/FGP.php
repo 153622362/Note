@@ -1,4 +1,5 @@
 <?php
+//FILE GRAPH PDO
 Class File{
 	//PATH_SEPARATOR //分隔符 ;
 	//DIRECTORY_SEPARATOR //目录
